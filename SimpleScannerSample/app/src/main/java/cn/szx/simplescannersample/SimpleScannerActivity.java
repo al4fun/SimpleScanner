@@ -21,6 +21,7 @@ public class SimpleScannerActivity extends AppCompatActivity implements ZBarScan
 
     private static final int REQUEST_CAMERA_PERMISSION = 0;
     private ZBarScannerView zBarScannerView;
+    private Handler handler = new Handler();
 
     @Override
     public void onCreate(Bundle state) {
@@ -56,6 +57,7 @@ public class SimpleScannerActivity extends AppCompatActivity implements ZBarScan
     public void onPause() {
         super.onPause();
 
+        handler.removeCallbacksAndMessages(null);
         zBarScannerView.stopCamera();//释放相机资源等各种资源
     }
 
@@ -64,7 +66,7 @@ public class SimpleScannerActivity extends AppCompatActivity implements ZBarScan
         Toast.makeText(this, "Contents = " + rawResult.getContents() + ", Format = " + rawResult.getBarcodeFormat().getName(), Toast.LENGTH_SHORT).show();
 
         //2秒后再次识别
-        new Handler().postDelayed(new Runnable() {
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 zBarScannerView.getOneMoreFrame();//再获取一帧图像数据进行识别

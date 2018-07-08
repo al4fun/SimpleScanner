@@ -6,6 +6,7 @@ import android.hardware.Camera;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -32,7 +33,6 @@ public class ZBarScannerView extends BarcodeScannerView {
     private ImageScanner imageScanner;
     private List<BarcodeFormat> formats;
     private ResultHandler resultHandler;
-    private Camera camera;
 
     public interface ResultHandler {
         void handleResult(Result rawResult);
@@ -46,8 +46,9 @@ public class ZBarScannerView extends BarcodeScannerView {
         System.loadLibrary("iconv");
     }
 
-    public ZBarScannerView(@NonNull Context context, @NonNull IViewFinder viewFinderView) {
+    public ZBarScannerView(@NonNull Context context, @NonNull IViewFinder viewFinderView, @Nullable ResultHandler resultHandler) {
         super(context, viewFinderView);
+        this.resultHandler = resultHandler;
         setupScanner();//创建ImageScanner（zbar扫码器）并进行基本设置（如支持的码格式）
     }
 
@@ -74,7 +75,6 @@ public class ZBarScannerView extends BarcodeScannerView {
      */
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
-        this.camera = camera;
         if (resultHandler == null) return;
         long startTime = System.currentTimeMillis();
 
@@ -146,7 +146,7 @@ public class ZBarScannerView extends BarcodeScannerView {
                 getOneMoreFrame();//再获取一帧图像数据进行识别（会再次触发onPreviewFrame方法）
             }
         } catch (RuntimeException e) {
-            Log.e(TAG, e.toString(), e);
+            e.printStackTrace();
         }
     }
 
@@ -167,14 +167,12 @@ public class ZBarScannerView extends BarcodeScannerView {
         return formats;
     }
 
-    public void setResultHandler(@NonNull ResultHandler resultHandler) {
-        this.resultHandler = resultHandler;
-    }
-
     /**
      * 再获取一帧图像数据进行识别（会再次触发onPreviewFrame方法）
      */
     public void getOneMoreFrame() {
-        camera.setOneShotPreviewCallback(this);
+        if (cameraWrapper != null) {
+            cameraWrapper.camera.setOneShotPreviewCallback(this);
+        }
     }
 }

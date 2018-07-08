@@ -13,14 +13,13 @@ public class CameraUtils {
     }
 
     /**
-     * 返回第一个后置相机的id
+     * 返回第一个后置相机的id。若未找到后置相机，则返回-1
      **/
     public static int getDefaultCameraId() {
         int numberOfCameras = Camera.getNumberOfCameras();
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
         int defaultCameraId = -1;
         for (int i = 0; i < numberOfCameras; i++) {
-            defaultCameraId = i;
             Camera.getCameraInfo(i, cameraInfo);
             if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
                 return i;

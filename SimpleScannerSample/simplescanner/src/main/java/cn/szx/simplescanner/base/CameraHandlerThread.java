@@ -22,7 +22,7 @@ public class CameraHandlerThread extends HandlerThread {
      */
     public void startCamera(final int cameraId) {
         Handler localHandler = new Handler(getLooper());
-        localHandler.post(new Runnable() {//在当前线程执行
+        localHandler.post(new Runnable() {//在HandlerThread线程执行
             @Override
             public void run() {
                 final Camera camera = CameraUtils.getCameraInstance(cameraId);//打开camera

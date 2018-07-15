@@ -8,7 +8,6 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 
 import net.sourceforge.zbar.Config;
 import net.sourceforge.zbar.Image;
@@ -76,7 +75,6 @@ public class ZBarScannerView extends BarcodeScannerView {
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
         if (resultHandler == null) return;
-        long startTime = System.currentTimeMillis();
 
         try {
             Camera.Parameters parameters = camera.getParameters();
@@ -131,8 +129,6 @@ public class ZBarScannerView extends BarcodeScannerView {
                         break;//识别成功一个就跳出循环
                     }
                 }
-
-                Log.e(TAG, String.format("图像处理及识别耗时: %d ms", System.currentTimeMillis() - startTime));
 
                 new Handler(Looper.getMainLooper()).post(new Runnable() {//切换到主线程
                     @Override

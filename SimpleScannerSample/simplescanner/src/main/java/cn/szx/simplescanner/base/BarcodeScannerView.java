@@ -27,7 +27,7 @@ public abstract class BarcodeScannerView extends FrameLayout implements Camera.P
     private CameraPreview cameraPreview;
     private Rect scaledRect, rotatedRect;
     private ArrayList<Camera.Area> focusAreas;
-    private boolean shouldAdjustFocusArea = false;
+    private boolean shouldAdjustFocusArea = false;//是否需要自动调整对焦区域
 
     public BarcodeScannerView(@NonNull Context context, @NonNull IViewFinder viewFinderView) {
         super(context);
@@ -300,7 +300,7 @@ public abstract class BarcodeScannerView extends FrameLayout implements Camera.P
      * 设置是否要根据扫码框的位置去调整对焦区域的位置<br/>
      * 默认值为false，即不调整，会使用系统默认的配置，那么对焦区域会位于预览画面的中央<br/>
      * <br/>
-     * (经测试，调整对焦区域功能对极个别机型无效，即设置之后对焦区域依然位于预览画面的中央，原因不明)
+     * (经测试，此功能功能对少数机型无效，待优化)
      */
     public void setShouldAdjustFocusArea(boolean shouldAdjustFocusArea) {
         this.shouldAdjustFocusArea = shouldAdjustFocusArea;

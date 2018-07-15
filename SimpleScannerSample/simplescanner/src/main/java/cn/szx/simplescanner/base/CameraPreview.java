@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -53,21 +52,16 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        Log.d(TAG, "surfaceCreated");
-
         surfaceCreated = true;
         startCameraPreview();
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i2, int i3) {
-        Log.d(TAG, "surfaceChanged");
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-        Log.d(TAG, "surfaceDestroyed");
-
         surfaceCreated = false;
         stopCameraPreview();
     }
@@ -75,7 +69,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 //--------------------------------------------------------------------------------------------------
 
     /**
-     * 开始扫码（设置各种预览参数和回调、并开始预览）
+     * 开始预览
      */
     public void startCameraPreview() {
         if (cameraWrapper != null) {
@@ -94,7 +88,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     /**
-     * 停止扫码(停止相机预览并置空各种回调)
+     * 停止预览
      */
     public void stopCameraPreview() {
         if (cameraWrapper != null) {
@@ -114,7 +108,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
      * 尝试自动对焦
      */
     private void safeAutoFocus() {
-        if (cameraWrapper != null && previewing) {
+        if (cameraWrapper != null && previewing && surfaceCreated) {
             try {
                 focusAreaSetter.setAutoFocusArea();
                 cameraWrapper.camera.autoFocus(autoFocusCB);
@@ -139,8 +133,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     Camera.AutoFocusCallback autoFocusCB = new Camera.AutoFocusCallback() {
         //自动对焦完成时此方法被调用
         public void onAutoFocus(boolean success, Camera camera) {
-            //Log.d(TAG, "自动对焦完成");
-
             scheduleAutoFocus();//一秒之后再次自动对焦
         }
     };

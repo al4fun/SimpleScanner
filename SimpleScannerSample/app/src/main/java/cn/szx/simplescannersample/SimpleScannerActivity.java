@@ -36,7 +36,6 @@ public class SimpleScannerActivity extends AppCompatActivity implements ZBarScan
 
         //ViewFinderView是根据需求自定义的视图，会被覆盖在相机预览画面之上，通常包含扫码框、扫描线、扫码框周围的阴影遮罩等
         zBarScannerView = new ZBarScannerView(this, new ViewFinderView(this), this);
-        zBarScannerView.setShouldAdjustFocusArea(true);//设置是否要根据扫码框的位置去调整对焦区域的位置,默认不调整
 
         container.addView(zBarScannerView);
     }

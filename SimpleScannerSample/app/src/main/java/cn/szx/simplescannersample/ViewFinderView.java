@@ -17,10 +17,10 @@ import cn.szx.simplescanner.base.IViewFinder;
  */
 public class ViewFinderView extends RelativeLayout implements IViewFinder {
     private Rect framingRect;//扫码框所占区域
-    private float widthRatio = 0.8f;//扫码框宽度占view总宽度的比例
+    private float widthRatio = 0.86f;//扫码框宽度占view总宽度的比例
     private float heightWidthRatio = 0.6f;//扫码框的高宽比
     private int leftOffset = -1;//扫码框相对于左边的偏移量，若为负值，则扫码框会水平居中
-    private int topOffset = -1;//扫码框相对于顶部的偏移量，若为负值，则扫码框会竖直居中
+    private int topOffset = (int) (150*getContext().getResources().getDisplayMetrics().density);//扫码框相对于顶部的偏移量，若为负值，则扫码框会竖直居中
 
     private boolean isLaserEnabled = true;//是否显示扫描线
     private static final int[] laserAlpha = {0, 64, 128, 192, 255, 192, 128, 64};
